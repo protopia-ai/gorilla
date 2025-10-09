@@ -694,13 +694,21 @@ def formulate_system_prompt(format_sensitivity_config: str, functions: list[dict
         functions=formatted_function_doc,
     )
 
-    system_prompt = prompt_template.format(
+    if prompt_format == "chat_completions":
+        system_prompt = prompt_template.format(
         persona=persona,
         task=task,
         tool_call_format=tool_call_format,
-        multiturn_behavior=multiturn_behavior,
-        available_tools=available_tools,
+        multiturn_behavior=multiturn_behavior
     )
+    else:
+        system_prompt = prompt_template.format(
+            persona=persona,
+            task=task,
+            tool_call_format=tool_call_format,
+            multiturn_behavior=multiturn_behavior,
+            available_tools=available_tools,
+        )
 
     return system_prompt
 
@@ -902,7 +910,7 @@ def parse_prompt_variation_params(input_str: str) -> tuple[str, bool, str, str, 
         r"ret_fmt=(?P<return_format>python|json|verbose_xml|concise_xml)"
         r"&tool_call_tag=(?P<has_tool_call_tag>True|False)"
         r"&func_doc_fmt=(?P<function_doc_format>python|xml|json)"
-        r"&prompt_fmt=(?P<prompt_format>plaintext|markdown)"
+        r"&prompt_fmt=(?P<prompt_format>plaintext|markdown|chat_completions)"
         r"&style=(?P<prompt_style>classic|experimental)"
         r"$"
     )

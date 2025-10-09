@@ -9,6 +9,7 @@ from bfcl_eval.constants.category_mapping import *
 from bfcl_eval.constants.default_prompts import (
     ADDITIONAL_SYSTEM_PROMPT_FOR_AGENTIC_RESPONSE_FORMAT,
     DEFAULT_SYSTEM_PROMPT_FORMAT,
+    CHAT_COMPLETIONS_SYSTEM_PROMPT_FORMAT
 )
 from bfcl_eval.constants.eval_config import *
 from bfcl_eval.constants.executable_backend_config import (
@@ -57,7 +58,9 @@ def extract_prompt_format_from_id(test_entry_id: str) -> str:
     """
     Extract the prompt format from the test entry ID.
     """
-    if ":" not in test_entry_id:
+    if test_entry_id == "chat_completions":
+        return CHAT_COMPLETIONS_SYSTEM_PROMPT_FORMAT
+    elif ":" not in test_entry_id:
         return DEFAULT_SYSTEM_PROMPT_FORMAT
     else:
         assert (
