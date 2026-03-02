@@ -42,13 +42,20 @@ _PLAINTEXT_SYSTEM_PROMPT_TEMPLATE = (
 )
 _MARKDOWN_SYSTEM_PROMPT_TEMPLATE = "{persona}\n\n## Task\n{task}\n\n## Tool Call Format\n{tool_call_format}\n\n## Multi-turn Behavior\n{multiturn_behavior}\n\n## Available Tools\n{available_tools}"
 
+_CHAT_COMPLETIONS_SYSTEM_PROMPT_TEMPLATE = (
+    "{persona}{task}\n\n{tool_call_format}\n\n{multiturn_behavior}"
+)
+
 PROMPT_TEMPLATE_MAPPING = {
     "plaintext": _PLAINTEXT_SYSTEM_PROMPT_TEMPLATE,
     "markdown": _MARKDOWN_SYSTEM_PROMPT_TEMPLATE,
+    "chat_completions": _CHAT_COMPLETIONS_SYSTEM_PROMPT_TEMPLATE,
 }
 
 # This is the default system prompt format
 DEFAULT_SYSTEM_PROMPT_FORMAT = "ret_fmt=python&tool_call_tag=False&func_doc_fmt=json&prompt_fmt=plaintext&style=classic"
+
+CHAT_COMPLETIONS_SYSTEM_PROMPT_FORMAT = "ret_fmt=python&tool_call_tag=False&func_doc_fmt=json&prompt_fmt=chat_completions&style=classic"
 
 # NOT USED, just for reference
 # This is the prompt template for the default system prompt format

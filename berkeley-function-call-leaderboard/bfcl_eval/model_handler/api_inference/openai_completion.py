@@ -87,14 +87,22 @@ class OpenAICompletionsHandler(BaseHandler):
             "model": self.model_name,
             "temperature": self.temperature,
             "store": False,
+            "max_completion_tokens": 8192,
         }
 
         if len(tools) > 0:
             kwargs["tools"] = tools
+            kwargs["tool_choice"] = "auto"
 
         return self.generate_with_backoff(**kwargs)
 
     def _pre_query_processing_FC(self, inference_data: dict, test_entry: dict) -> dict:
+
+        # SID_DEBUG
+        functions: list = test_entry["function"]
+        test_entry_id: str = "chat_completions" # SID_DEBUG: ensure that this works for all the test_entry ids, check the dataset in bfcl.
+        test_entry["question"][0] = system_prompt_pre_processing_chat_model(test_entry["question"][0], functions, test_entry_id)
+        # SID_DEBUG
         inference_data["message"] = []
         return inference_data
 
@@ -224,6 +232,7 @@ class OpenAICompletionsHandler(BaseHandler):
             model=self.model_name,
             temperature=self.temperature,
             store=False,
+            max_tokens=8192,
         )
 
     def _pre_query_processing_prompting(self, test_entry: dict) -> dict:
